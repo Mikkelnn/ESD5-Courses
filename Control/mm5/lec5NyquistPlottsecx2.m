@@ -1,67 +1,50 @@
-% MATLAB script to display progressive Nyquist plots of the submarine system
-% Starting from the integrators and adding controller and feedbacks step-by-step
+% MATLAB Script for Problem 2
 
-% Clear workspace, close figures
-clear;
-clc;
-close all;
+% Given parameters
+wc = pi/4;     % Desired digital cutoff frequency (rad)
+T = 1;         % Sample period (assume T = 1 for simplicity)
 
-% Parameters
-K = 1;  % Gain K
-a = 1;  % Feedback gain a
-b = 1;  % Feedback gain b
-epsilon = 1e-3; % Small value to ensure more realistic plots
+% Analog cutoff frequency
+Omega_c = 2/T * tan(wc/2);  % Prewarp the cutoff frequency
 
-% Step 1: Submarine dynamics only (3 integrators, no feedback or controller)
-numerator_submarine = 1;
-denominator_submarine = [1 0 0 0]; % Submarine dynamics: 1/s^3
+% Bilinear transformation of H(s) -> H(z)
+syms z
+s = 2/T * (1 - z^-1) / (1 + z^-1);  % Bilinear transformation
 
-sys_submarine = tf(numerator_submarine, denominator_submarine);
+% Analog transfer function H(s)
+Hs = Omega_c / (s + Omega_c);
 
-% Plot Nyquist plot for submarine only
+% Substitute s into H(s) to get H(z)
+Hz = simplify(Hs);
+
+% Display the digital transfer function H(z)
+disp('Digital transfer function H(z):');
+pretty(Hz)
+
+% Convert the symbolic transfer function to a numerical one
+[num, den] = numden(Hz);      % Get numerator and denominator
+num = sym2poly(num);          % Convert symbolic to polynomial coefficients
+den = sym2poly(den);          % Convert symbolic to polynomial coefficients
+
+% Frequency response of the digital filter
+freqz(num, den);
+
+% Find 3dB cutoff frequency
+[H, w] = freqz(num, den, 1024);  % Compute frequency response
+H_dB = 20*log10(abs(H));         % Magnitude response in dB
+
+% Plot the magnitude response in dB
 figure;
-nyquist(sys_submarine);
+plot(w/pi, H_dB);
+title('Magnitude Response of the Digital Filter');
+xlabel('Normalized Frequency (\times \pi rad/sample)');
+ylabel('Magnitude (dB)');
 grid on;
-title('Nyquist Plot of Submarine Dynamics (3 Integrators)');
-pause(2); % Pause to observe the plot
 
-% Step 2: Add controller (K)
-numerator_controller = K;
-denominator_controller = [1 0 0 epsilon]; % Adding small epsilon for damping
-sys_controller = tf(numerator_controller, denominator_controller);
+% Find the 3dB frequency
+H_max = max(H_dB);           % Maximum magnitude
+idx_3dB = find(H_dB <= H_max - 3, 1);  % Find first point where it drops by 3dB
+f_3dB = w(idx_3dB) / pi;     % Normalized frequency
 
-% Plot Nyquist plot for submarine + controller
-figure;
-nyquist(sys_controller);
-grid on;
-title('Nyquist Plot of Submarine Dynamics with Controller (K = 1)');
-pause(2); % Pause to observe the plot
+fprintf('The 3dB frequency is at %f*pi rad/sample\n', f_3dB);
 
-% Step 3: Add feedback loop a (first dotted feedback loop)
-numerator_feedback_a = a;
-denominator_feedback_a = [1 0]; % 1/s term from feedback loop a
-sys_feedback_a = tf(numerator_feedback_a, denominator_feedback_a);
-
-% Combine submarine, controller, and feedback a
-sys_with_feedback_a = series(sys_controller, sys_feedback_a);
-
-% Plot Nyquist plot for submarine + controller + feedback a
-figure;
-nyquist(sys_with_feedback_a);
-grid on;
-title('Nyquist Plot of Submarine + Controller + Feedback a');
-pause(2); % Pause to observe the plot
-
-% Step 4: Add feedback loop b (second dotted feedback loop)
-numerator_feedback_b = b;
-denominator_feedback_b = [1 0]; % 1/s term from feedback loop b
-sys_feedback_b = tf(numerator_feedback_b, denominator_feedback_b);
-
-% Combine everything: submarine + controller + feedback a + feedback b
-sys_with_feedback_b = series(sys_with_feedback_a, sys_feedback_b);
-
-% Plot Nyquist plot for full system with both feedback loops
-figure;
-nyquist(sys_with_feedback_b);
-grid on;
-title('Nyquist Plot of Full System (Submarine + Controller + Feedback a + Feedback b)');
