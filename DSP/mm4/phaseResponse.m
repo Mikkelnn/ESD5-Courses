@@ -5,9 +5,9 @@ denominator = [1 -1.4590 0.9104 -0.1978];
 % Frequency response
 [H, w] = freqz(numerator, denominator, 512);
 
-% Plot magnitude response
+% Phase response
 figure;
-plot(w/pi, 20*log10(abs(H)));
+plot(w/pi, angle(H));
 xlabel('Normalized Frequency (\times\pi rad/sample)');
-ylabel('Magnitude (dB)');
-title('Amplitude Response');
+ylabel('Phase (radians)');
+title('Phase Response');
