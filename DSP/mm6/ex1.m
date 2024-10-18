@@ -1,7 +1,7 @@
 % Call function here
-transBand = 0.1; % Transition band
-peakApproxErr = 0.01; %peak approximation error 
-filterOrder = 50; % Filter order
+transBand = 0.01; % Transition band
+peakApproxErr = 0.001; %peak approximation error 
+filterOrder = 100; % Filter order
 bessleApprox = 20; % terms for Bessel function approximation
 
 kaiserWindowPlot(transBand, peakApproxErr, filterOrder, bessleApprox);
@@ -46,7 +46,10 @@ function kaiserWindowPlot(Delta_f, Delta_p, M, N_bessel)
     xlabel('n');
     ylabel('w[n]');
     grid on;
-    
+    w1 = kaiser(M,beta);
+    [W1,f] = freqz(w1/sum(w1),1,512,2);
+    figure;
+    plot(f,20*log10(abs(W1)))
 end
 
 % Local function to compute the modified Bessel function of the first kind (I0)
