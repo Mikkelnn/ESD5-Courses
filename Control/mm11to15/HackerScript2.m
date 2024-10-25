@@ -57,4 +57,36 @@ Dr = Fe(1) - Fe(2)*Le;
 K = Cr*inv((s*eye(1) - Ar))*Br + Dr;
 H = ss(A,B,C,zeros(1,1));
 sysCL = feedback(K,H,1);
-zpk(sysCL)
+zpk(sysCL);
+
+
+%mm15
+Acl = [A B*F; ...
+       -L*C A+L*C+B*F];
+Bstor = [B
+         B];
+Cstor = [C 0 0];
+H1 = 0.25*ss (Acl,Bstor,Cstor,zeros(1,1));
+figure;
+hold on;
+bode(H1);
+Mt1 = place((A+B*F+L*C).',F.',[-1,-2]).';
+Bcl1 = [B
+       Mt1];
+N1 = -inv(Cstor*inv(Acl)*Bcl1);
+M1 = Mt1*N1;
+Bny1 = [B*N1
+       M1];
+H2 = ss(Acl,Bny1,Cstor,zeros(1,1));
+bode(H2);
+Mt2 = place((A+B*F+L*C).',F.',[-1.4,-4]).';
+Bcl2 = [B
+       Mt2];
+N2 = -inv(Cstor*inv(Acl)*Bcl2);
+M2 = Mt2*N2;
+Bny2 = [B*N2
+       M2];
+H3 = ss(Acl,Bny2,Cstor,zeros(1,1));
+bode(H3);
+legend('No zeros', 'With zeros in -1 and -2', 'With zeros in -1.4 and -4');
+hold off
