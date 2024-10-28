@@ -1,7 +1,7 @@
 % Call function here
 transBand = 0.01; % Transition band
 peakApproxErr = 0.001; %peak approximation error 
-filterOrder = 100; % Filter order
+filterOrder = 50; % Filter order
 bessleApprox = 20; % terms for Bessel function approximation
 
 kaiserWindowPlot(transBand, peakApproxErr, filterOrder, bessleApprox);

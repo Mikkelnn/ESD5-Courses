@@ -27,7 +27,7 @@ title('Step Response of the System');
 
 % Add lead compensator design using rlocus:
 % Select gain (K) that places the poles at the desired locations
-K = 0.07;  % Adjust this gain value based on root locus plot
+K = 3.7;  % Adjust this gain value based on root locus plot
 
 % Closed-loop system with compensator
 Gc = K * G;
