@@ -1,0 +1,1 @@
+ Pe = 1 - sum(out.x(1:end-1) == out.xhat(2:end)) / length(out.x(1:end-1));
