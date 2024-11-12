@@ -1,6 +1,6 @@
 % Filter specifications
-N = 9;            % Filter length (number of taps)
-fs = 3000;       % Sampling frequency in Hz
+N = 15;            % Filter length (number of taps)
+fs = 4800;       % Sampling frequency in Hz
 fp = 1000;        % Passband frequency in Hz
 f_nyquist = fs / 2;  % Nyquist frequency
 

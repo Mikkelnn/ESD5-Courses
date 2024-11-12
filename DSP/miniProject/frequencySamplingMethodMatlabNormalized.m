@@ -1,32 +1,34 @@
+% Main script
 
 % Filter specifications
-N = 49;            % Filter length
-M = floor (N/2) + 1;
-fs = 4900;       % Sampling frequency in Hz
-fp = 1000;        % Passband frequency in Hz
-alpha = (N - 1) / 2;  % Phase shift
-l = fs/N
+N = 24;                     % Filter length
+M = floor(N / 2) + 1;
+fs = 4900;                 % Sampling frequency in Hz
+fp = 1000;                 % Passband frequency in Hz
+alpha = (N - 1) / 2;       % Phase shift
+l = fs / N;
 
 % Normalized frequency
-f_normalized = (0:N-1) * fs / N;
+f_normalized = (0:N-1) / N;  % Normalized frequency from 0 to 1
 
 % Desired frequency response H(k) (low-pass)
 H = zeros(1, N);
 for k = 1:N
-    if k < ceil(M/2)
-        H(k) = 1;  % Passband
+    if k < 12
+        H(k) = 1;          % Passband
     else
-        H(k) = 0;  % Stopband
+        H(k) = 0;          % Stopband
     end
 end
-%disp('Hs size:');
-H(ceil(M/2)+2) = 0.01;
-H(ceil(M/2)+1) = 0.200;
-H(ceil(M/2)) = 0.650;
+
+% Manually adjust some values for specific filter response
+%H(5) = 0.0037;
+%H(4) = 0.123;
+%H(3) = 0.601;
 H
 
 M = 3;
-tw = (M+1)*fs/N;
+tw = (M + 1) * fs / N;
 
 % Compute h(n) using the formula provided
 h = zeros(1, N);  % Preallocate the impulse response array
@@ -43,19 +45,18 @@ end
 disp('Filter Coefficients h(n):');
 disp(h);
 
-% Assume variables `h`, `N`, and `fs` are defined in the workspace
+% Compute frequency response for plotting
 H_freq = fft(h, 512);            % Use a high number of points for smooth frequency plot
-f = (0:511) * fs / 512;          % Frequency vector for plotting
+f_normalized_plot = (0:511) / 512;  % Normalized frequency vector for plotting
 
 % Compute the magnitude in dB and amplitude
 h_freqDB = mag2db(abs(H_freq));  % dB scale
 h_freq_amp = abs(H_freq);        % Amplitude scale
 
 % Choose which plots to display
-showImpulseResponse = true;
+showImpulseResponse = false;
 showMagnitudeDB = true;
 showMagnitudeAmplitude = true;
-
 
 % Display the selected plots
 if showImpulseResponse
@@ -63,11 +64,11 @@ if showImpulseResponse
 end
 
 if showMagnitudeDB
-    plotMagnitudeDB(f, h_freqDB, fs);
+    plotMagnitudeDB(f_normalized_plot, h_freqDB);
 end
 
 if showMagnitudeAmplitude
-    plotMagnitudeAmplitude(f, h_freq_amp, fs);
+    plotMagnitudeAmplitude(f_normalized_plot, h_freq_amp);
 end
 
 % Function definitions
@@ -79,22 +80,22 @@ function plotImpulseResponse(h, N)
     ylabel('h(n)');
 end
 
-function plotMagnitudeDB(f, h_freqDB, fs)
+function plotMagnitudeDB(f_normalized, h_freqDB)
     figure; % Open a new figure window
-    plot(f, h_freqDB);
+    plot(f_normalized, h_freqDB);
     title('Magnitude of Frequency Response in dB |H(f)|');
-    xlabel('Frequency (Hz)');
+    xlabel('Normalized Frequency (×π rad/sample)');
     ylabel('|H(f)| in dB');
-    xlim([0 fs/2]);  % Limit the x-axis to the Nyquist frequency (half the sampling rate)
+    xlim([0 0.5]);  % Limit the x-axis to the Nyquist frequency in normalized units (0.5)
     grid on;
 end
 
-function plotMagnitudeAmplitude(f, h_freq_amp, fs)
+function plotMagnitudeAmplitude(f_normalized, h_freq_amp)
     figure; % Open a new figure window
-    plot(f, h_freq_amp);
+    plot(f_normalized, h_freq_amp);
     title('Magnitude of Frequency Response |H(f)| in Amplitude');
-    xlabel('Frequency (Hz)');
+    xlabel('Normalized Frequency (×π rad/sample)');
     ylabel('|H(f)| in Amplitude');
-    xlim([0 fs/2]);  % Limit the x-axis to the Nyquist frequency (half the sampling rate)
+    xlim([0 0.5]);  % Limit the x-axis to the Nyquist frequency in normalized units (0.5)
     grid on;
 end
