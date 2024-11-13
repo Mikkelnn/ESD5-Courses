@@ -1,8 +1,9 @@
 
 % Filter specifications
-N = 49;            % Filter length
+N = 9;            % Filter length
 M = floor (N/2) + 1;
-fs = 4900;       % Sampling frequency in Hz
+MN = (3);
+fs = 4800;       % Sampling frequency in Hz
 fp = 1000;        % Passband frequency in Hz
 alpha = (N - 1) / 2;  % Phase shift
 l = fs/N
@@ -13,16 +14,16 @@ f_normalized = (0:N-1) * fs / N;
 % Desired frequency response H(k) (low-pass)
 H = zeros(1, N);
 for k = 1:N
-    if k < ceil(M/2)
+    if k < ceil(MN)
         H(k) = 1;  % Passband
     else
         H(k) = 0;  % Stopband
     end
 end
 %disp('Hs size:');
-H(ceil(M/2)+2) = 0.01;
-H(ceil(M/2)+1) = 0.200;
-H(ceil(M/2)) = 0.650;
+H(ceil(MN)+2) = 0.01;
+H(ceil(MN)+1) = 0.200;
+H(ceil(MN)) = 0.650;
 H
 
 M = 3;
@@ -52,7 +53,7 @@ h_freqDB = mag2db(abs(H_freq));  % dB scale
 h_freq_amp = abs(H_freq);        % Amplitude scale
 
 % Choose which plots to display
-showImpulseResponse = true;
+showImpulseResponse = false;
 showMagnitudeDB = true;
 showMagnitudeAmplitude = true;
 

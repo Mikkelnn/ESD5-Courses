@@ -1,7 +1,7 @@
 % Main script
 
 % Filter specifications
-N = 24;                     % Filter length
+N = 25;                     % Filter length
 M = floor(N / 2) + 1;
 fs = 4900;                 % Sampling frequency in Hz
 fp = 1000;                 % Passband frequency in Hz
