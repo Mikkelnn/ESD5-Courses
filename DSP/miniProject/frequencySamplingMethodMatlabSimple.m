@@ -1,9 +1,10 @@
 
 % Filter specifications
-N = 9;            % Filter length
+N = 19;            % Filter length Husk at det skal være ulige her
+fd = 250;
 M = floor (N/2) + 1;
-MN = (3);
-fs = 4800;       % Sampling frequency in Hz
+MN = (4);
+fs = N*fd;       % Sampling frequency in Hz
 fp = 1000;        % Passband frequency in Hz
 alpha = (N - 1) / 2;  % Phase shift
 l = fs/N
@@ -21,20 +22,21 @@ for k = 1:N
     end
 end
 %disp('Hs size:');
-H(ceil(MN)+2) = 0.01;
-H(ceil(MN)+1) = 0.200;
-H(ceil(MN)) = 0.650;
+H(ceil(MN)+3) = 0.178
+H(ceil(MN)+2) = 0.388;
+H(ceil(MN)+1) = 0.708;
+H(ceil(MN)) = 0.891;
 H
 
-M = 3;
-tw = (M+1)*fs/N;
+%M = 3;
+%tw = (M+1)*fs/N;
 
 % Compute h(n) using the formula provided
 h = zeros(1, N);  % Preallocate the impulse response array
 
 for n = 0:N-1
     sum_term = 0;
-    for k = 1:(N/2 - 1)
+    for k = 1:((N-1)/2)
         sum_term = sum_term + 2 * abs(H(k + 1)) * cos(2 * pi * k * (n - alpha) / N);
     end
     h(n + 1) = (1 / N) * (sum_term + H(1));
@@ -53,7 +55,7 @@ h_freqDB = mag2db(abs(H_freq));  % dB scale
 h_freq_amp = abs(H_freq);        % Amplitude scale
 
 % Choose which plots to display
-showImpulseResponse = false;
+showImpulseResponse = true;
 showMagnitudeDB = true;
 showMagnitudeAmplitude = true;
 

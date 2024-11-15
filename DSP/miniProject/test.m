@@ -1,20 +1,20 @@
 % Full MATLAB Script for Filter Design, Noisy Signal Generation, and Testing
 
 % Filter specifications
-N = 25;            % Filter length
-M = floor (N/2) + 1;
-MN = (M/3);
-fs = 4900;       % Sampling frequency in Hz
+N = 19;            % Filter length Husk at det skal være ulige her
+fd = 250;
+%M = floor (N/2) + 1;
+MN = (4);
+fs = N*fd;       % Sampling frequency in Hz
 fp = 1000;        % Passband frequency in Hz
 alpha = (N - 1) / 2;  % Phase shift
 l = fs/N
 
 % Normalized frequency
-f_normalized = (0:N-1) * fs / N;
+%f_normalized = (0:N-1) * fs / N;
 
 % Desired frequency response H(k) (low-pass)
 H = zeros(1, N);
-M = floor(N/2) + 1;
 for k = 1:N
     if k < ceil(MN)
         H(k) = 1;  % Passband
@@ -22,10 +22,11 @@ for k = 1:N
         H(k) = 0;  % Stopband
     end
 end
-% Apply adjustments to H as per original code
-H(ceil(MN)+2) = 0.01;
-H(ceil(MN)+1) = 0.200;
-H(ceil(MN)) = 0.650;
+%disp('Hs size:');
+H(ceil(MN)+3) = 0.178
+H(ceil(MN)+2) = 0.388;
+H(ceil(MN)+1) = 0.708;
+H(ceil(MN)) = 0.891;
 H
 
 % Compute impulse response h(n)
@@ -59,7 +60,7 @@ x_noisy_interp = interp1(t, x_noisy, t_high_res, 'spline'); % Interpolated noisy
 % Plot original noisy signal with high-resolution time vector
 subplot(3,1,1);
 plot(t_high_res, x_noisy_interp);
-title('Noisy Input Signal with 500 Hz Signal and High-Frequency Noise Filter 2');
+title('Noisy Input Signal with 500 Hz Signal and High-Frequency Noise Filter 1');
 xlabel('Time (s)');
 ylabel('Amplitude');
 
@@ -103,7 +104,7 @@ function x_noisy = generateNoisySignal(fs, duration)
     signal_passband = amplitude_passband * sin(2 * pi * f_passband * t);
     
     % Generate high-frequency noise (frequencies above 1500 Hz)
-    high_freqs = [1000 1500 2000 2500 100 ]; % Frequencies in the stopband
+    high_freqs = [1500 1750 1900]; % Frequencies in the stopband
     %noise = 0.3 * randn(size(t));  % Initialize with Gaussian noise
     noise = 0;
 
