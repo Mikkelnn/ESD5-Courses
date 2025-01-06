@@ -37,7 +37,7 @@ h = zeros(1, N);  % Preallocate the impulse response array
 for n = 0:N-1
     sum_term = 0;
     for k = 1:((N-1)/2)
-        sum_term = sum_term + 2 * abs(H(k + 1)) * cos(2 * pi * k * (n - alpha) / N);
+        sum_term = sum_term + 2 * abs(H(k+1)) * cos(2 * pi * k * (n - alpha) / N);
     end
     h(n + 1) = (1 / N) * (sum_term + H(1));
 end

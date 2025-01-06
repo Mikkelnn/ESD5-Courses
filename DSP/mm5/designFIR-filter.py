@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import freqz, firwin
 
 # Specifications
-Fs = 8000  # Sampling frequency in Hz
+Fs = 4900  # Sampling frequency in Hz
 fc = 1000  # 3dB cutoff frequency in Hz
 f1 = 750   # Frequency where gain should be -1dB
 f2 = 1500  # Frequency where gain should be -10dB
