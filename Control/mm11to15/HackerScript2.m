@@ -39,6 +39,7 @@ Co = C*To;
 L = To*Lo;
 eig(Ao+Lo*Co);
 eig(A+L*C);
+eig(A+B*F);
 eig([A B*F; ...
      -L*C A+L*C+B*F]);
 
