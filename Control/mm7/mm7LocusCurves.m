@@ -10,6 +10,7 @@ rlocus(SysD);
 SysE = 1/((s+2+i*1)*(s+2-i*1)*(s-2));
 rlocus(SysE);
 SysF = (s+2)/((s+4+i*2)*(s+4-i*2)*(s-2)*(s+i*1)*(s-i*1));
+figure;
 rlocus(SysF);
 SysG = (s+2)/((s^2)*(s+4))
 rlocus(SysG);
