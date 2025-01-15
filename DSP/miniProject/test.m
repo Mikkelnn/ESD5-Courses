@@ -56,6 +56,7 @@ t_high_res = linspace(0, duration, length(x_noisy) * 5); % Increase to 5x resolu
 x_noisy_interp = interp1(t, x_noisy, t_high_res, 'spline'); % Interpolated noisy signal
 
 % Plot original noisy signal with high-resolution time vector
+figure;
 subplot(4,1,1);
 plot(t_high_res, x_noisy_interp);
 title('Noisy Input Signal with High-Frequency Noise');
@@ -73,7 +74,8 @@ xlabel('Time (s)');
 ylabel('Amplitude');
 
 % Plot FFT of the noisy (unfiltered) signal
-subplot(2,1,1);
+%figure;
+subplot(4,1,3);
 plot(f_fft, x_noisy_fft);
 title('FFT of Noisy (Unfiltered) Signal');
 xlabel('Frequency (Hz)');
@@ -82,7 +84,7 @@ xlim([0 fs/2]); % Nyquist frequency
 grid on;
 
 % Plot FFT of the filtered signal
-subplot(2,1,2);
+subplot(4,1,4);
 plot(f_fft, y_filtered_fft);
 title('FFT of Filtered Signal');
 xlabel('Frequency (Hz)');
@@ -93,7 +95,7 @@ grid on;
 % Helper function: Generate a noisy test signal with 500 Hz sine wave and high-frequency noise
 function x_noisy = generateNoisySignal(fs, duration)
     % Parameters for the signal components
-    f_passband = 500;             % Clear signal frequency in the passband (e.g., 500 Hz)
+    f_passband = 900;             % Clear signal frequency in the passband (e.g., 500 Hz)
     amplitude_passband = 1;       % Amplitude of the passband component
     
     % Generate time vector based on duration and sampling frequency
@@ -103,7 +105,7 @@ function x_noisy = generateNoisySignal(fs, duration)
     signal_passband = amplitude_passband * sin(2 * pi * f_passband * t);
     
     % Generate high-frequency noise (frequencies above 1500 Hz)
-    high_freqs = [1000 1500 2000 2500 100]; % Frequencies in the stopband
+    high_freqs = [1200 1300]; % Frequencies in the stopband
     noise = 0;
 
     for f_noise = high_freqs
