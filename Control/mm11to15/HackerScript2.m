@@ -37,6 +37,7 @@ Ao = inv(To)*A*To;
 Co = C*To;
 %Tjek om svaret er rigtigt
 L = To*Lo;
+L
 eig(Ao+Lo*Co);
 eig(A+L*C);
 eig(A+B*F);
