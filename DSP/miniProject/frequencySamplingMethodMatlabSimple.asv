@@ -22,10 +22,10 @@ for k = 1:N
     end
 end
 %disp('Hs size:');
-H(ceil(MN)+3) = 0.5;
-H(ceil(MN)+2) = 0.5;
-H(ceil(MN)+1) = 0.5;
-H(ceil(MN)) = 0.5;
+H(ceil(MN)+3) = 0.178
+H(ceil(MN)+2) = 0.388;
+H(ceil(MN)+1) = 0.708;
+H(ceil(MN)) = 0.891;
 H
 
 %M = 3;
@@ -55,7 +55,6 @@ h_freqDB = mag2db(abs(H_freq));  % dB scale
 h_freq_amp = abs(H_freq);        % Amplitude scale
 
 % Choose which plots to display
-figure;
 showImpulseResponse = true;
 showMagnitudeDB = true;
 showMagnitudeAmplitude = true;
@@ -76,8 +75,7 @@ end
 
 % Function definitions
 function plotImpulseResponse(h, N)
-    %figure; % Open a new figure window
-    subplot(3,1,1);
+    figure; % Open a new figure window
     stem(0:N-1, h, 'filled');
     title('Impulse Response h(n)');
     xlabel('n');
@@ -85,8 +83,7 @@ function plotImpulseResponse(h, N)
 end
 
 function plotMagnitudeDB(f, h_freqDB, fs)
-    %figure; % Open a new figure window
-    subplot(3,1,2);
+    figure; % Open a new figure window
     plot(f, h_freqDB);
     title('Magnitude of Frequency Response in dB |H(f)|');
     xlabel('Frequency (Hz)');
@@ -96,8 +93,7 @@ function plotMagnitudeDB(f, h_freqDB, fs)
 end
 
 function plotMagnitudeAmplitude(f, h_freq_amp, fs)
-    %figure; % Open a new figure window
-    subplot(3,1,3);
+    figure; % Open a new figure window
     plot(f, h_freq_amp);
     title('Magnitude of Frequency Response |H(f)| in Amplitude');
     xlabel('Frequency (Hz)');
