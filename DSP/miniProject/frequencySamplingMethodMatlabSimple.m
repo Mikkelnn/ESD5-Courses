@@ -26,7 +26,7 @@ H(ceil(MN)+3) = 0.178
 H(ceil(MN)+2) = 0.388;
 H(ceil(MN)+1) = 0.708;
 H(ceil(MN)) = 0.891;
-H
+H;
 
 %M = 3;
 %tw = (M+1)*fs/N;
