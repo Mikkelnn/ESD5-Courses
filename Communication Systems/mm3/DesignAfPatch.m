@@ -1,5 +1,5 @@
 % Given constants
-f_0 = 2.441e9; % Design frequency (mid-point of Bluetooth range), in Hz
+f_0 = 70e9; % Design frequency (mid-point of Bluetooth range), in Hz
 c = 3e8; % Speed of light, m/s
 epsilon_r = 2.2; % Dielectric constant for PP
 h = 3e-3; % Substrate thickness, in meters
